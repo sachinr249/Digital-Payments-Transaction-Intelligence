@@ -77,13 +77,6 @@ as one continuous engagement gradient rather than two hard categories. Cluster c
 confirmed recency, frequency, and monetary value all rank in the same order across every 
 cluster — engagement behaves like a spectrum, not distinct customer types.
 
-| Segment (rule-based) | Users | Share | Churn rate |
-|---|---|---|---|
-| VIP / Champions | 8,827 | 36.1% | 5.3% |
-| At Risk | 3,506 | 14.3% | 76.1% |
-| Dormant | 8,725 | 35.7% | 4.8% |
-| New & Promising | 3,405 | 13.9% | 13.9% |
-
 ## 3. Transaction Failure Risk
 
 Used chi-square testing to identify which features actually relate to failure before 
