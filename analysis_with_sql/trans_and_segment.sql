@@ -1,9 +1,12 @@
+--==========================================
+-- Segmentation and RFM feature engineering
+--==========================================
+
 -- Build the RFM feature table — for each user: Recency (days since last transaction), 
 -- Frequency (transaction count), Monetary (total or avg amount).
 -- Recency — how many days ago was their last transaction? (Lower = better, means still active)
 -- Frequency — how many transactions have they made total? (Higher = more engaged)
 -- Monetary — how much money have they spent total/on average? (Higher = more valuable)
-
 select 
     u.user_id,
     u.signup_date,
@@ -34,11 +37,13 @@ LIMIT 25000;
 select count(distinct users.user_id) from users;
 
 
+--===================================
+-- Transaction-level data exploration
+--===================================
 
 -- transaction_id, status, network_type, device_type, payment_mode, 
 -- transaction_type, amount, hour_of_day (extracted from timestamp), 
 -- is_weekend (derived), merchant_category (joined from merchants)
-
 select 
 t1.transaction_id, t1.status, t1.network_type, t1.device_type, t1.payment_mode, t1.transaction_type, t1.amount,
 hour(t1.timestamp) as hour_of_day,
@@ -51,7 +56,11 @@ limit 1000000 ;
 -- number of transactions
 select count(*) from transactions ;
 
--- daily transaction volume
+
+--===============================================
+-- Daily transaction volume (forcasting analysis)
+--===============================================
+
 select 
     date(timestamp) as txn_date,
     sum(amount) as total_amount,

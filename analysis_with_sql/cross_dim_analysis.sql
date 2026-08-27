@@ -1,9 +1,11 @@
 -- ========================================
 -- Cross-dimensional questions and analysis
--- =====================================
+-- ========================================
+
 -- Does the 3G failure problem hit some merchant categories harder than others?
 --  e.g., if Fuel or Grocery merchants (likely low-connectivity areas) have both high 3G usage and high failure rate, 
 -- that's a real infrastructure insight, not just a device stat.
+
 with failure as (
 	select  t2.category ,t1.network_type ,t1.status ,  sum(t1.value) as "no_trans"
 	from (
@@ -60,6 +62,7 @@ where t1.is_churned = 1 ;
 -- What's the median transaction amount vs. the average, per category? 
 -- If mean >> median in a category, that tells you a few huge outlier transactions are skewing the 
 -- "average" — a classic trap in payments data (someone paying a huge one-time bill).
+
 with ranked_data as (
 select t2.category , t1.amount , 
 row_number() over(partition by t2.category order by t1.amount ) as row_num,
@@ -90,6 +93,7 @@ from transactions ;
 -- =======================================
 -- Merchant lifecycle: do merchants onboarded more recently process less volume than older ones (ramp-up effect), or is it flat? 
 -- Tells a "merchant maturity curve" story.
+
 with cte4 as (
 	select 
 	case when onboarding_date < date_add((select max(onboarding_date) from merchants),interval -1 month) then "old" else "new" end as merchant_type ,
@@ -105,6 +109,7 @@ from cte4 ;
 
 -- First-transaction lag: how many days after signup does a user make their first transaction?
 --  Is there a big drop-off of users who never transact at all (signed up, never activated)?
+
 with trans_detail as (
 	select 
 	t1.user_id ,
@@ -134,6 +139,7 @@ order by num_user desc ;
 -- ================================
 -- State-level failure rate differences — if certain states show meaningfully higher failure rates,
 --  that could point to network infrastructure gaps (real business insight, not just a data quirk).
+
 with state_dist as (
 	select  t2.state , t1.status
 	from transactions t1 
